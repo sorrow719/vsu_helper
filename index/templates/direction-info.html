@@ -1,0 +1,157 @@
+{# Описание #}
+{% load staticfiles %}
+{% block description %}
+    {% load comments %}
+    <div class="container-fluid" style="padding-top: 2rem;">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 ">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="media">
+                            <div align="center">
+                                <img class="thumbnail img-thumbnail" src="{{ direction.department_fk.gerb_url }}"
+                                     width="250px"
+                                     height="250px">
+                                <h3><a style="word-wrap: normal; color: #0f0f0f" href="#"><strong> {{ direction.department_fk }} факультет</strong></a>
+                                </h3>
+                            </div>
+                            <div class="media-body">
+                                <div align="center">
+                                <h3>Направление: <strong>{{ direction }}</strong></h3><hr>
+                                <h4>Форма обучения: {{ direction.form_learn }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                    <span>
+                        <h1 class="panel-title pull-left" style="font-size:30px;">Проходные баллы </h1>
+                    </span>
+                        <br><br>
+                        <i class="fa fa-tags" aria-hidden="true"></i>
+                        Кимы:
+                        {% for subject in subjects %}
+                            <a href="{{ subject.url }}" class="panel panel-primary" style="padding: 1px 1px 1px 1px;">{{ subject.name }}</a>
+                        {% endfor %}
+                        <br>
+                        <h5>Минимальный балл: {{ direction.min_mark }}</h5>
+                        <div class="media-body">
+                            <div id="curve_chart" style="width: 100%; height: 300px">
+                            </div>
+                        </div>
+                        <hr>
+                        <span class="pull-left">
+                        <a href="#comments" class="btn btn-link" style="text-decoration:none;"><i
+                                class="fa fa-fw"
+                                aria-hidden="true"></i> Комменатрии <span
+                                class="badge">{% get_comment_count for direction as comment_count %} {{ comment_count }}</span></a>
+                    </span>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="post-content">
+                            <h2 class="page-header">Комментарии</h2>
+                        </div>
+                        <div class="media">
+
+                            <div class="pull-left">
+                                <a href="#">
+                                    <img class="media-object img-circle"
+                                         src="{% static 'img/avatar.png' %}" width="35px"
+                                         height="35px" style="margin-left:3px; margin-right:-5px;">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                {% if user.is_authenticated %}
+                                    {% get_comment_form for direction as form %}
+                                    <form id="comment_form" method="post">
+                                        {% csrf_token %}
+
+                                        <div class="form-group">
+                                       <textarea name="comment" required id="id_comment" class="form-control" rows="2"
+                                                 placeholder="Комментарий"></textarea>
+                                        </div>
+                                        {{ form.content_type }}
+                                        {{ form.object_pk }}
+                                        {{ form.timestamp }}
+                                        {{ form.security_hash }}
+                                    </form>
+
+                                    <div class="form-group">
+                                        <button onclick="post_comment({{ direction.id }})" class="btn btn-primary">
+                                            Отправить
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    <p>Пожалуйста <a href="#">авторизируйтесь</a> для того, чтобы
+                                        оставлять комментарии.</p>
+                                {% endif %}
+                            </div>
+                            <div id="comments" class="container">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <section class="comment-list">
+                                            <!-- First Comment -->
+                                            {% get_comment_list for direction as comment_list %}
+                                            {% for comment in comment_list %}
+                                                <article class="row">
+                                                    <div class="col-md-2 col-sm-2 hidden-xs">
+                                                        <figure class="thumbnail">
+                                                            <img class="img-responsive"
+                                                                 src="{% static 'img/avatar.png' %}"/>
+                                                            <figcaption
+                                                                    class="text-center">{{ comment.user_name }}</figcaption>
+                                                        </figure>
+                                                    </div>
+                                                    <div class="col-md-10 col-sm-10">
+                                                        <div class="panel panel-default arrow left">
+                                                            <div class="panel-body">
+                                                                <header class="text-left">
+                                                                    <time class="comment-date"
+                                                                          datetime="16-12-2014 01:05">
+                                                                        <i class="fa fa-clock-o"></i> {{ comment.submit_date }}
+                                                                    </time>
+                                                                </header>
+                                                                <div class="comment-post">
+                                                                    <p>
+                                                                        {{ comment.comment }}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                            {% endfor %}
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable({{ values }});
+            var options = {
+                curveType: 'function',
+                legend: {position: 'bottom'}
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+            chart.draw(data, options);
+        }
+    </script>
+    </section>
+{% endblock %}

@@ -1,0 +1,42 @@
+{# Результаты поиска #}
+{% load staticfiles %}
+{% block result %}
+    <div id="data" class="container">
+        {% for direct in directions %}
+            {% cycle '<div class="row text-center">' '' '' %}
+            <div class="col-lg-4 col-sm-6 col-md-4 col-xs-12" style="float: left !important;">
+                <div class="card hovercard" onclick="get_description({{ direct.id }})">
+                    <div class="cardheader card-heading">
+                    </div>
+                    <div class="avatar" style="margin-bottom:-5.8rem !important;">
+                        <img alt="" src=" {{ direct.department_fk.gerb_url }}">
+                    </div>
+                    <div class="info">
+                        <div class="card-heading simple">
+                            {{ direct }}
+                        </div>
+                        <div class="">
+                            <a href="{{ direct.department_fk.url }}" class="card-link"><strong>Факультет: {{ direct.department_fk }}</strong></a>
+                        </div>
+                        <div class="card-media">
+                            Форма обучения: {{ direct.form_learn }}
+                            <p>Минимальный балл: {{ direct.min_mark }}</p>
+                        </div>
+                        <div class="card-comments">
+                            {% for subj in direct.subjects_list.all %}
+                                <div class="desc">{{ subj.name }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="bottom">
+                    </div>
+                </div>
+            </div>
+            {% cycle '' '' '</div>' %}
+            {% if forloop.counter == directions|length and not directions|divisibleby:"3" %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}

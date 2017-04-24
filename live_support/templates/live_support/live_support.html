@@ -1,0 +1,49 @@
+<div id="chat_id">
+    {% for message in messages %}
+        {% if message.name != user.username %}
+            <div class="row msg_container base_sent">
+                {% if message.name %}
+                    <div class="col-md-10 col-xs-10">
+                        <div id="{{ message.id }}" class="messages msg_sent">
+                            {{ message.name }}:{{ message.message }}
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-2 avatar">
+                        <span class="img-responsive glyphicon glyphicon-user" style="font-size:4.0rem;"></span>
+                    </div>
+                {% else %}
+                    <div id="{{ message.id }}" class="panel panel-info">
+                        <div class="panel-body">
+                            <div class="post-content">
+                                {{ message.message }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="row msg_container base_receive">
+                {% if message.name %}
+                    <div class="col-md-2 col-xs-2 avatar">
+                        <span class="img-responsive glyphicon glyphicon-user" style="font-size:4.0rem;"></span>
+                    </div>
+                    <div class="col-md-10 col-xs-10">
+                        <div id="{{ message.id }}" class="messages msg_receive">
+                            {{ message.name }}:{{ message.message }}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-md-12 col-xs-12">
+                        <div id="{{ message.id }}" class="panel panel-info">
+                            <div class="panel-body">
+                                <div class="post-content">
+                                   {{ message.message }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

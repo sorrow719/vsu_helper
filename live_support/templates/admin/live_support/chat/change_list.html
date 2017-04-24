@@ -1,0 +1,81 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+{% load i18n admin_list %}
+{% load staticfiles %}
+{% block content_title %}
+    <h1 id="site-name" xmlns="http://www.w3.org/1999/html"
+        xmlns="http://www.w3.org/1999/html">{% trans 'Администрирование чатов' %}</h1>
+{% endblock %}
+
+{% block content %}
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-sm-3">
+            <h4>{% trans 'Ожидающие чаты' %} <span
+                                onclick="deleteAllChats('{% url 'delete_all_chat' %}')"
+                                class="btn btn-xs btn-default glyphicon glyphicon-remove"></span></h4>
+            <ul>
+                {% for chat in pending_chats %}
+                    <li><a class="{{ chat.is_active }}" href="{% url 'join_chat' chat.id %}">{{ chat.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-lg-6">
+            <h4>{% trans 'Активные чаты' %}</h4>
+            <ul class="nav nav-tabs">
+                {% for chat in active_chats %}
+                    <li>
+                        <a data-toggle="tab" id="chat_header_{{ chat.id }}"
+                           onclick="getMessageWrapper('{{ chat.hash_key }}','{% url 'client_get_messages' chat.hash_key %}')"
+                           href="#{{ chat.id }}">{{ chat.name }}&nbsp;<span
+                                onclick="endChat('{{ chat.id }}','{% url 'client_end_chat' chat.hash_key %}')"
+                                class="btn btn-xs btn-default glyphicon glyphicon-remove"></span></a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <br>
+            <div class="tab-content">
+                {% for chat in active_chats %}
+                    <div id="{{ chat.id }}" class="tab-pane fade">
+                        <div class="container-fluid">
+                            <div class="row" id="chat_window_1">
+                                <div class="col-xs-12 col-md-12 col-sm-12">
+                                    <div class="panel panel-default">
+                                        <div id="chat_frame_{{ chat.hash_key }}" class="panel-body msg_container_base">
+
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="input-group" style="width: 100% !important;">
+                                                <form id="send_message" method="post">
+                                                    <div class="form-group">
+                                                        {% csrf_token %}
+                                                        <div class="input-group">
+                                                            <input id="chat_url" type="hidden"
+                                                                   class="form-control chat_url"
+                                                                   name="chat_url"
+                                                                   value="{% url 'client_post_message' chat.hash_key %}"/>
+                                                            <textarea id="area-message-{{ chat.hash_key }}"
+                                                                      name="message" type="text"
+                                                                      class="form-control custom-control"
+                                                                      placeholder="Сообщение"/></textarea>
+                                                            <span onclick="sendMessage('{{ chat.hash_key }}','{% url 'client_get_messages' chat.hash_key %}','{% url 'client_post_message' chat.hash_key %}')"
+                                                                  class="send_message_button input-group-addon btn btn-primary"
+                                                                  id="btn-chat"><span
+                                                                    class="glyphicon glyphicon-envelope"></span></span>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {# block.super #}
+{% endblock %}
+

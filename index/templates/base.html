@@ -1,0 +1,248 @@
+{# Главная страница #}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title>Помощник абитурьента ВГУ</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="{% static 'js/jquery/jquery.js' %}"></script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" onclick="_index_view();" href="/">Помощник абитурьента</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                {% block login %}
+                {% endblock %}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</header>
+
+<section id="logo" style="padding-bottom: 7rem;">
+    <div class="container logo">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10 text-center">
+                <img src="{% static 'img/logo.png' %}" alt="Логотип" class="img-responsive img-thumbnail">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="search" style="padding-top: 1rem;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 search_field">
+                <div class="row select2multiple">
+                    <form id="search_form" method="post">
+                        <div class="col-lg-2 col-sm-3">
+                            <input id="search_form_toggle" type="checkbox" data-toggle="toggle" data-on="Направления"
+                                   data-off="Предметы">
+                        </div>
+                        <div class="col-lg-8 col-sm-8">
+                            <select class="basic_select" multiple="multiple" name="tag" id="tag" style="width: 100%">
+                            </select>
+                        </div>
+                    </form>
+                    <div class="col-lg-2 col-sm-1">
+                        <button onclick="_search()" class="btn btn-info">Подобрать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="result" style="padding-top: 1%; padding-bottom: 3%;">
+</section>
+{% load live_support_tags %}
+{% chat_iframe 1 %}
+<section id="footer" class="container">
+    <footer class="footer-bs">
+        <div class="row">
+            <div class="col-md-3 footer-brand animated fadeInLeft">
+                <h2>Приемная коммиссия ВГУ</h2>
+                <h5><a class="h5" href="tel:+74732208593">+7 (473) 220-85-93</a></h5>
+                <h5><a class="h5" href="tel:+78001008361">+7 (800) 100-83-61</a></h5>
+                <ul class="social-network social-circle">
+                    <li><a href="mailto:pt@vsu.ru" class="icoRss" title="Rss"><i class="fa fa-envelope"></i></a></li>
+                    <li><a href="https://vk.com/abitur_vsu" class="icoFacebook" title="Vk"><i class="fa fa-vk"></i></a></li>
+                    <li><a href="https://twitter.com/abituronline" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                </ul>
+            </div>
+            <div class="col-md-5 footer-brand animated pull-right">
+                <div id="map" style="height: 30vw; width: 36vw">
+                </div>
+            </div>
+        </div>
+    </footer>
+</section>
+<!-- Modal -->
+<div class="modal fade bs-modal-sm" id="authModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <br>
+            <div class="bs-example bs-example-tabs">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active"><a href="#signin" data-toggle="tab">Войти</a></li>
+                    <li class=""><a href="#signup" data-toggle="tab">Регистрация</a></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade active in" id="signin">
+                        <form id="login_form" class="form-horizontal" method="post"
+                              accept-charset="UTF-8">
+                            <fieldset>
+                                {% csrf_token %}
+                                <!-- Sign In Form -->
+                                <!-- Text input-->
+                                <div class="control-group">
+                                    <label class="control-label" for="userid">Логин:</label>
+                                    <div class="controls">
+                                        <input required="" id="login" name="login" type="text" class="form-control"
+                                               placeholder="Логин" class="input-medium" required="">
+                                    </div>
+                                </div>
+
+                                <!-- Password input-->
+                                <div class="control-group">
+                                    <label class="control-label" for="passwordinput">Пароль:</label>
+                                    <div class="controls">
+                                        <input required="" id="password" name="password" class="form-control"
+                                               type="password" placeholder="********" class="input-medium">
+                                    </div>
+                                </div>
+                                <!-- Multiple Checkboxes (inline) -->
+                                <!-- Multiple Checkboxes (inline) -->
+                                <div class="control-group">
+                                    <label class="control-label" for="rememberme"></label>
+                                    <div class="controls">
+                                        <label for="rememberme">
+                                            <input type="checkbox" name="remember" id="remember"
+                                                   value="remember">
+                                            Запоминть меня
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <div class="control-group">
+                            <label class="control-label" for="signin"></label>
+                            <div class="controls">
+                                <button onclick="login()" class="btn btn-success">Войти</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="signup">
+                        <form id="registration_form" class="form-horizontal" method="post"
+                              accept-charset="UTF-8">
+                            <fieldset>
+                                {% csrf_token %}
+                                <!-- Sign Up Form -->
+                                <!-- Text input-->
+                                <div class="control-group">
+                                    <label class="control-label" for="userid">Логин:</label>
+                                    <div class="controls">
+                                        <input id="login" name="login" class="form-control" type="text"
+                                               placeholder="Логин" class="input-large" required="">
+                                    </div>
+                                </div>
+
+
+                                <!-- Text input-->
+                                <div class="control-group">
+                                    <label class="control-label" for="Email">Email:</label>
+                                    <div class="controls">
+                                        <input id="email" name="email" class="form-control" type="email"
+                                               placeholder="email" class="input-large" required="">
+                                    </div>
+                                </div>
+
+                                <!-- Password input-->
+                                <div class="control-group">
+                                    <label class="control-label" for="password">Пароль:</label>
+                                    <div class="controls">
+                                        <input id="password" name="password" class="form-control" type="password"
+                                               placeholder="Введите пароль" class="input-large" required="">
+                                    </div>
+                                </div>
+
+                                <!-- Text input-->
+                                <div class="control-group">
+                                    <label class="control-label" for="reenterpassword">Подтвердите пароль:</label>
+                                    <div class="controls">
+                                        <input id="reenterpassword" class="form-control" name="reenterpassword"
+                                               type="password" placeholder="Введите пароль еще раз" class="input-large"
+                                               required="">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <!-- Button -->
+                        <div class="control-group">
+                            <label class="control-label" for="confirmsignup"></label>
+                            <div class="controls">
+                                <button id="confirmsignup" name="confirmsignup" onclick="registration();"
+                                        class="btn btn-success">
+                                    Зарегестрироваться
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.nicescroll.min.js' %}"></script>
+<script src="{% static 'js/wow.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrp-toggle.js' %}"></script>
+<script src="{% static 'js/select2/select2.min.js' %}"></script>
+<script src="{% static 'js/main_script.js' %}"></script>
+<!--{{ search_form.media.js }}-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+<script>
+    ymaps.ready(function () {
+        var map = new ymaps.Map('map', {
+                center: [51.656445, 39.206021],
+                zoom: 17
+            }, {
+                searchControlProvider: 'yandex#search'
+            }),
+            myPlacemark = new ymaps.Placemark(map.getCenter(), {
+                iconCaption: 'ВГУ',
+            }, {
+                preset: 'islands#blueEducationIcon'
+            });
+        map.geoObjects.add(myPlacemark);
+    });
+</script>
+</body>
+</html>

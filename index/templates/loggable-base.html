@@ -1,0 +1,19 @@
+{# Логин #}
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block login %}
+    {% if user.is_authenticated == True %}
+        <ul id="login" class="nav navbar-nav nav-tabs navbar-left">
+            <li class=""><a href="admin/"> <b class="text-uppercase">{{ user }}</b></a></li>
+            <li class=""><a href="logout/">Выйти</a></li>
+        </ul>
+    {% elif  user.is_authenticated == False %}
+        <ul class="nav navbar-nav nav-tabs navbar-right">
+            <li>
+                <a data-toggle="modal" data-target="#authModal" href="">
+                    Войти
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+{% endblock %}
