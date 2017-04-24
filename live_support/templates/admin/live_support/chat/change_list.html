@@ -57,7 +57,7 @@
                                                             <textarea id="area-message-{{ chat.hash_key }}"
                                                                       name="message" type="text"
                                                                       class="form-control custom-control"
-                                                                      placeholder="Сообщение"/></textarea>
+                                                                      placeholder="Сообщение"></textarea>
                                                             <span onclick="sendMessage('{{ chat.hash_key }}','{% url 'client_get_messages' chat.hash_key %}','{% url 'client_post_message' chat.hash_key %}')"
                                                                   class="send_message_button input-group-addon btn btn-primary"
                                                                   id="btn-chat"><span

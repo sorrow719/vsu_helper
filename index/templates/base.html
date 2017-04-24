@@ -32,10 +32,8 @@
                 <a class="navbar-brand" onclick="_index_view();" href="/">Помощник абитурьента</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
                 {% block login %}
                 {% endblock %}
-                </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
@@ -121,25 +119,27 @@
                                 <!-- Sign In Form -->
                                 <!-- Text input-->
                                 <div class="control-group">
-                                    <label class="control-label" for="userid">Логин:</label>
+                                    <label class="control-label" for="login">Логин:</label>
                                     <div class="controls">
-                                        <input required="" id="login" name="login" type="text" class="form-control"
-                                               placeholder="Логин" class="input-medium" required="">
+                                        <input required="" id="login" name="login" type="text"
+                                               class="form-control input-medium"
+                                               placeholder="Логин">
                                     </div>
                                 </div>
 
                                 <!-- Password input-->
                                 <div class="control-group">
-                                    <label class="control-label" for="passwordinput">Пароль:</label>
+                                    <label class="control-label" for="password">Пароль:</label>
                                     <div class="controls">
-                                        <input required="" id="password" name="password" class="form-control"
-                                               type="password" placeholder="********" class="input-medium">
+                                        <input required="" id="password" name="password"
+                                               class="form-control input-medium"
+                                               type="password" placeholder="********">
                                     </div>
                                 </div>
                                 <!-- Multiple Checkboxes (inline) -->
                                 <!-- Multiple Checkboxes (inline) -->
                                 <div class="control-group">
-                                    <label class="control-label" for="rememberme"></label>
+                                    <label class="control-label" for="remember"></label>
                                     <div class="controls">
                                         <label for="rememberme">
                                             <input type="checkbox" name="remember" id="remember"
@@ -165,20 +165,20 @@
                                 <!-- Sign Up Form -->
                                 <!-- Text input-->
                                 <div class="control-group">
-                                    <label class="control-label" for="userid">Логин:</label>
+                                    <label class="control-label" for="login">Логин:</label>
                                     <div class="controls">
-                                        <input id="login" name="login" class="form-control" type="text"
-                                               placeholder="Логин" class="input-large" required="">
+                                        <input id="login" name="login" class="form-control input-large" type="text"
+                                               placeholder="Логин" required="">
                                     </div>
                                 </div>
 
 
                                 <!-- Text input-->
                                 <div class="control-group">
-                                    <label class="control-label" for="Email">Email:</label>
+                                    <label class="control-label" for="email">Email:</label>
                                     <div class="controls">
-                                        <input id="email" name="email" class="form-control" type="email"
-                                               placeholder="email" class="input-large" required="">
+                                        <input id="email" name="email" class="form-control input-large" type="email"
+                                               placeholder="email" required="">
                                     </div>
                                 </div>
 
@@ -186,8 +186,9 @@
                                 <div class="control-group">
                                     <label class="control-label" for="password">Пароль:</label>
                                     <div class="controls">
-                                        <input id="password" name="password" class="form-control" type="password"
-                                               placeholder="Введите пароль" class="input-large" required="">
+                                        <input id="password" name="password" class="form-control input-large"
+                                               type="password"
+                                               placeholder="Введите пароль" required="">
                                     </div>
                                 </div>
 
@@ -195,8 +196,9 @@
                                 <div class="control-group">
                                     <label class="control-label" for="reenterpassword">Подтвердите пароль:</label>
                                     <div class="controls">
-                                        <input id="reenterpassword" class="form-control" name="reenterpassword"
-                                               type="password" placeholder="Введите пароль еще раз" class="input-large"
+                                        <input id="reenterpassword" class="form-control input-large"
+                                               name="reenterpassword"
+                                               type="password" placeholder="Введите пароль еще раз"
                                                required="">
                                     </div>
                                 </div>
